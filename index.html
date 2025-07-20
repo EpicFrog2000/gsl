@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="margin: 0; display: grid;">
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+
+<div class="container c2">
+    <div class="slide_item s2" id="s4" style="transform: translate(0%, 0%) scale(1, 1);">
+        s1
+    </div>
+    <div class="slide_item s2" id="s1">
+        s2
+    </div>
+    <div class="slide_item s2" id="s3">
+        s3
+    </div>
+    <div class="slide_item s2" id="s2" >
+        s4
+    </div>
+</div>
+
+
+<div class="container" id="c1">
+    <div class="slide_item s1" id="s2" >
+        <div style="height: 100%; width: 100%; background-size: cover; background-position: 50% 50%; background-image: url(https://imgs.search.brave.com/0gAhkX8M-BnYX9liixvwWMe48ibTpx_jAlXDZ9Dt6CM/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wNTYv/OTI5LzQ4Mi9zbWFs/bC92aW50YWdlLWJs/dWUtY2FwaXRhbC1s/ZXR0ZXItcy1vbi1n/cmV5LWNvbmNyZXRl/LXdhbGwtZnJlZS1w/aG90by5qcGVn);"></div>
+    </div>
+    <div class="slide_item s1" id="s3" >
+        <div style="height: 100%; width: 100%; background-size: cover; background-position: 50% 50%; background-image: url(https://imgs.search.brave.com/IFJyMwOMZdxq3e5lk7-f0HWGDK-9gqCN7CURG8XYwW0/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly90My5m/dGNkbi5uZXQvanBn/LzA4Lzc4LzE1Lzg2/LzM2MF9GXzg3ODE1/ODY2OF9BZUJtWHpV/aXpqc1c1cWpxQXZR/UFhRRHpHZnNyY3hq/Ti5qcGc);"></div>
+    </div>
+    <div class="slide_item s1" id="s4" >
+        <div style="height: 100%; width: 100%; background-size: cover; background-position: 50% 50%; background-image: url(https://imgs.search.brave.com/siTMk0NrhQBhAiz6btt4hkYJaGaGYFB78AqTk3NSKf0/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wNTAv/OTQ0LzYwNS9zbWFs/bC9sZXR0ZXItcy1m/b250LW9yYW5nZS1m/cmFtZS11cHBlcmNh/c2UtZm9yLWNoaWxk/cmVuLXRveS1sZWFy/bmluZy1vbi1zb2xp/ZC1iYWNrZ3JvdW5k/LXBob3RvLkpQRw);"></div>
+    </div>
+    <div class="slide_item s1" id="s1" >
+        <div style="height: 100%; width: 100%; background-size: cover; background-position: 50% 50%; background-image: url(https://imgs.search.brave.com/vuI8QpPnFffdQ0vcn4vu_nYzr_G8I-P4DwbSn-WT03Q/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wNTcv/MjUyLzM4OS9zbWFs/bC90cmFuc2x1Y2Vu/dC1sZXR0ZXItcy1p/bi1kZXd5LWZpZWxk/LWF0LXN1bnJpc2Ut/ZnJlZS1waG90by5q/cGVn);"></div>
+    </div>
+</div>
+
+
+</body>
+</html>
+
+
+
+<style>
+.container{
+    grid-row-start: 1;
+    grid-row-end: 1;
+    grid-column-start: 1;
+    grid-column-end: 1;
+    position: relative; 
+    z-index: 1; 
+    display: grid;
+    width: 900px;
+    height: 200px;
+    overflow: clip;
+    justify-items: center;
+    align-items: center;
+    justify-self: center;
+}
+
+.c2{
+    width: 100% !important;
+    height: 100vh !important;
+    z-index: 0;
+}
+
+
+.slide_item{
+    translate: none;
+    rotate: none;
+    scale: none;
+    position: relative;
+    z-index: 0;
+    width: 900px;
+    height: 200px;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    grid-column-start: 1;
+    grid-column-end: 1;
+    will-change: transform;
+    transform: translate(125%, 0%) scale(1, 1);
+    overflow: clip;
+}
+
+.s2{
+    width: 100% !important;
+    height: 100vh !important;
+}
+
+#s1{
+    background-color: red;
+}
+
+#s2{
+    background-color: blue;
+}
+.slide_item {
+    transition: background-color 0.3s;
+}
+#s3{
+    background-color: green;
+}
+
+#s4{
+    background-color: yellow;
+}
+</style>
+
+
+
+<script>
+let items1 = document.getElementsByClassName('s1');
+let items2 = document.getElementsByClassName('s2');
+let current = 0;
+
+let timeline1 = gsap.timeline();
+let timeline2 = gsap.timeline();
+
+function update(items) {
+
+    for (let i = 0; i < items.length; i++) {
+        items[i].style.zIndex = 0;
+    }
+
+    let prev = (current - 1 + items.length) % items.length;
+    let next = (current + 1) % items.length;
+    items[prev].style.zIndex = 1;
+    items[current].style.zIndex = 2;
+    items[next].style.zIndex = 0;
+
+    let timeline = gsap.timeline();
+
+    timeline.to(items[prev], {
+        x: '-100%',
+        duration: 0.8,
+        ease: "ease"
+    }, 0);
+
+    timeline.to(items[prev], {
+        scale: 1.1,
+        duration: 0.5,
+        ease: "ease"
+    }, 0);
+
+    timeline.to(items[prev], {
+        scale: 1,
+        duration: 0.5,
+        ease: "ease"
+    }, 0.5);
+
+    timeline.to(items[current], {
+        x: 0,
+        duration: 0.8,
+        ease: "ease",
+    }, 0);
+
+    timeline.to(items[current], {
+        scale: 1.1,
+        duration: 0.5,
+        ease: "ease"
+    }, 0);
+
+    timeline.to(items[current], {
+        scale: 1,
+        duration: 0.5,
+        ease: "ease"
+    }, 0.5);
+
+    timeline.to(items[next], {
+        x: '100%',
+        duration: 0.8,
+        ease: "ease"
+    }, 0);
+
+    timeline.to(items[next], {
+        scale: 1.1,
+        duration: 0.5,
+        ease: "ease"
+    }, 0);
+
+    timeline.to(items[next], {
+        scale: 1,
+        duration: 0.5,
+        ease: "ease"
+    }, 0.5);
+
+    return timeline;
+}
+
+document.addEventListener('click', () => {
+    if (timeline1.isActive() || timeline2.isActive()) return;
+    current = (current + 1) % items1.length;
+    timeline1 = update(items1);
+    timeline2 = update(items2);
+});
+
+update(items1);
+update(items2);
+
+
+
+</script>

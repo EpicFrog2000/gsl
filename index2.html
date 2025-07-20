@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/MotionPathHelper.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      overflow-x: hidden;
+    }
+
+    .hero {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      align-content: center;
+      place-items: center;
+      overflow: clip;
+    }
+
+    .text-block {
+      font-family: 'Syncopate', sans-serif;
+      font-weight: 700;
+      font-size: 180px;
+      color: white;
+      white-space: nowrap;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: row;
+    }
+
+    #REE {
+      z-index: 3;
+      opacity: 0;
+    }
+
+    #QUEST {
+      z-index: 1;
+    }
+
+    .background{
+      height: 100vh;
+      width: 100%;
+      background-color: #000;
+      position: relative;
+      z-index: 2;
+    }
+
+
+    @media screen and (max-width: 1200px) {
+      .text-block {
+        font-size: 120px;
+      }
+    }
+
+    @media screen and (max-width: 1000px) {
+      .text-block {
+        font-size: 40px;
+      }
+    }
+
+    .text_not_visible{
+      opacity: 0;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .projects_container{
+      min-height: 100vh;
+      display: flex;
+      flex-direction: row;
+      color: white;
+    }
+    .list{
+      width: 50%;
+    }
+    .projects{
+      width: 50%;
+    }
+    .project{
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="background" id="hero_text_cover"></div>
+    <div class="text-block" id="REE">REE</div>
+    <div class="text-block text_not_visible" id="PREQUEST"><span>REEQUEST</span></div>
+    <div class="text-block" id="QUEST"><span class="text_not_visible">REE</span><span>QUEST</span></div>
+  </div>
+
+  <div class="projects_container">
+    <div class="list">
+      <div style="position: sticky; top: 0;">
+        test
+      </div>
+    </div>
+    <div class="projects">
+      <div class="project">
+        test
+      </div>
+        <div class="project">
+          test
+        </div>
+        <div class="project">
+          test
+        </div>
+        <div class="project">
+          test
+        </div>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('load', () => {
+
+      gsap.registerPlugin(MotionPathHelper);
+      const ree = document.getElementById('REE');
+      const quest = document.getElementById('QUEST');
+      const prequest = document.getElementById('PREQUEST');
+      const hero_text_cover = document.getElementById('hero_text_cover');
+      console.log(PREQUEST.getBoundingClientRect());
+      
+      const toPos = ree.getBoundingClientRect().x - prequest.getBoundingClientRect().x;
+
+      console.log(prequest.getBoundingClientRect().x, ree.getBoundingClientRect().x, ree.getBoundingClientRect().x - prequest.getBoundingClientRect().x);
+
+      const timeline = gsap.timeline();
+      timeline.to(hero_text_cover, {
+        x: (-hero_text_cover.getBoundingClientRect().width) + prequest.getBoundingClientRect().x + ree.getBoundingClientRect().width,
+        duration: 0,
+        ease: "expo.inOut"
+      }, 0);
+
+      const windowWidth = window.innerWidth;
+
+      timeline.to(ree, {
+        scale: 1.5,
+        duration: 0,
+        ease: "expo.inOut"
+      }, 0);
+
+      timeline.to(ree, {
+        opacity: 1,
+        duration: 0.5,
+        ease: "expoScale(0.5,7,none)"
+      }, 0.2);
+
+      timeline.to(ree, {
+        scale: 1,
+        duration: 0.5,
+        ease: "expo.inOut"
+      }, 0.5);
+
+      timeline.to(ree, {
+        x: -toPos,
+        ease: "expo.inOut"
+      }, 1);
+
+      timeline.from(quest, {
+        x: "-150%",
+        ease: "expo.inOut"
+      }, 1);
+
+
+    });
+  </script>
+</body>
+</html>
+
+
+
