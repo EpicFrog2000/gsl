@@ -6,18 +6,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-
     <script async="" src="https://unpkg.com/lenis@1.2.3/dist/lenis.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/lenis@1.2.3/dist/lenis.css">
     <script>
-    //lenis
     document.addEventListener("DOMContentLoaded", function() {
         var link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = 'https://unpkg.com/lenis@1.2.3/dist/lenis.css';
         document.head.appendChild(link);
-
-        // Ładujemy skrypt po załadowaniu strony
         var script = document.createElement('script');
         script.src = 'https://unpkg.com/lenis@1.2.3/dist/lenis.min.js';
         script.onload = function() {
@@ -66,12 +62,12 @@
         .text-block {
             font-family: 'Syncopate', sans-serif;
             font-weight: 700;
-            font-size: 180px;
+            font-size: 480px;
             color: white;
             white-space: nowrap;
             position: absolute;
             top: 50%;
-            left: 50%;
+            left: 130%;
             transform: translate(-50%, -50%);
             line-height: 0.83;
             padding: 0;
@@ -86,16 +82,21 @@
 <body>
     <div class="scroll_content">
         <div class="hero">
-
         </div>
     </div>
-
-
 </body>
 </html>
 
 <script>
-    const steps = 8;
+  const steps = 16;
+
+    var backOut = gsap.parseEase("back.out(10)");
+    let eased_values = [];
+    for (let index = 0; index <= 1; index+=1/steps) {
+      var easedValue = backOut(index);
+      eased_values.push(-easedValue);
+    }
+
     for (let i = 0; i < steps; i++) {
         const div = document.createElement('span');
         div.className = 'text-block';
@@ -109,11 +110,12 @@
     }
 
     function move_shit(element, offset){
+      console.log(`top+=${window.innerHeight * (0.1) + (eased_values[parseInt(element.id.match(/\d+/)[0])] * 50)+200 }px`);
         gsap.to(`#${element.id}`, {
             scrollTrigger: {
                 trigger: "body",
-                start: () => `top+=${window.innerHeight * (0.1 + (offset * 0.015))}px`,
-                end: () => `top+=${window.innerHeight * 1}px`,
+                start: () => `top+=${window.innerHeight * (0.1) + (eased_values[parseInt(element.id.match(/\d+/)[0])] * 50)+200 }px`,
+                end: () => `top+=${window.innerHeight * 1.5}px`,
                 scrub: 0.5
             },
             x: "-150%"
@@ -126,5 +128,6 @@
         Array.from(TextElemnts).reverse().forEach((element, index) => {
             move_shit(element, index);
         });
+
     });
 </script>
