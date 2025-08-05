@@ -40,7 +40,7 @@
             padding: 0;
             background: #000;
             overflow-x: hidden;
-            
+            perspective: 1px;
         }
         .scroll_content{
             margin: 0;
@@ -60,6 +60,10 @@
         }
 
         .text-block {
+          will-change: transform;
+            border: none;
+            outline: none;
+            box-shadow: none;
             font-family: 'Syncopate', sans-serif;
             font-weight: 700;
             font-size: 480px;
@@ -68,7 +72,7 @@
             position: absolute;
             top: 50%;
             left: 130%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) translateY(0) translateZ(0) scale(1);
             line-height: 0.83;
             padding: 0;
             margin: 0;
@@ -76,6 +80,7 @@
             display: flex;
             align-items: center;
             overflow: hidden;
+
         }
     </style>
 </head>
@@ -90,44 +95,55 @@
 <script>
   const steps = 16;
 
-    var backOut = gsap.parseEase("back.out(10)");
-    let eased_values = [];
-    for (let index = 0; index <= 1; index+=1/steps) {
-      var easedValue = backOut(index);
-      eased_values.push(-easedValue);
-    }
+  var backOut = gsap.parseEase("back.out(10)");
+  let eased_values = [];
+  for (let index = 0; index <= 1; index+=1/steps) {
+    var easedValue = backOut(index);
+    eased_values.push((-easedValue * 50) + 200);
+  }
 
-    for (let i = 0; i < steps; i++) {
-        const div = document.createElement('span');
-        div.className = 'text-block';
-        div.id = `text-block_${i}`;
-        div.textContent = 'REEQUEST';
-        const start = (i * 100) / steps;
-        const end = ((i + 1) * 100) / steps;
-        div.style.webkitMaskImage = `linear-gradient(to bottom, transparent 0%, transparent ${start}%, white ${start}%, white ${end}%, transparent ${end}%, transparent 100%)`;
-        div.style.maskImage = div.style.webkitMaskImage;
-        document.querySelector('.hero').appendChild(div);
-    }
+  for (let i = 0; i < steps; i++) {
+      const div = document.createElement('span');
+      div.className = 'text-block';
+      div.id = `text-block_${i}`;
+      div.textContent = 'REEQUEST';
+      const start = (i * 100) / steps;
+      const end = ((i + 1) * 100) / steps;
+      div.style.webkitMaskImage = `linear-gradient(to bottom, transparent 0%, transparent ${start}%, white ${start}%, white ${end}%, transparent ${end}%, transparent 100%)`;
+      div.style.maskImage = div.style.webkitMaskImage;
+      document.querySelector('.hero').appendChild(div);
+  }
 
-    function move_shit(element, offset){
-      console.log(`top+=${window.innerHeight * (0.1) + (eased_values[parseInt(element.id.match(/\d+/)[0])] * 50)+200 }px`);
-        gsap.to(`#${element.id}`, {
-            scrollTrigger: {
-                trigger: "body",
-                start: () => `top+=${window.innerHeight * (0.1) + (eased_values[parseInt(element.id.match(/\d+/)[0])] * 50)+200 }px`,
-                end: () => `top+=${window.innerHeight * 1.5}px`,
-                scrub: 0.5
-            },
-            x: "-150%"
-        });
-    }
+  function move_shit(element, offset){
+      gsap.to(`#${element.id}`, {
+          scrollTrigger: {
+              trigger: "body",
+              start: () => `top+=${window.innerHeight * (0.1) + offset}px`,
+              end: () => `top+=${window.innerHeight * 1.5}px`,
+              scrub: 0.5
+          },
+          x: "-150%",
+          y: 0,
+          z: 0,
+          force3D: true,
+          onUpdate: (self) => {
+            gsap.to(`#${element.id}`, {
+              y: 0,
+            });
+          }
+      });
+  }
 
-    window.addEventListener('load', () => {
-        gsap.registerPlugin(ScrollTrigger);
-        const TextElemnts = document.getElementsByClassName('text-block');
-        Array.from(TextElemnts).reverse().forEach((element, index) => {
-            move_shit(element, index);
-        });
+  window.addEventListener('load', () => {
+      gsap.registerPlugin(ScrollTrigger);
+      const TextElemnts = document.getElementsByClassName('text-block');
+      Array.from(TextElemnts).reverse().forEach((element, index) => {
+          gsap.to(`#${element.id}`, {
+            y: 0,
+            duration: 0
+          });
+          move_shit(element, eased_values[index]);
+      });
+  });
 
-    });
 </script>
