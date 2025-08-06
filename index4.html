@@ -45,7 +45,7 @@
         .scroll_content{
             margin: 0;
             padding: 0;
-            height: 150vh;
+            height: 100vh;
             position: sticky;
             top: 0;
         }
@@ -62,7 +62,7 @@
             white-space: nowrap;
             position: absolute;
             top: 50%;
-            left: 130%;
+            left: 125%;
             transform: translate(-50%, -50%) translateY(0) translateZ(0) scale(1);
             line-height: 0.83;
             padding: 0;
@@ -74,7 +74,7 @@
 
         }
         .toilet{
-            height: 500vh;
+            height: 200vh;
         }
         
         .hero {
@@ -94,20 +94,18 @@
 
         .brown_shit{
             width: 100%;
-            height: 300vh;
+            height: 200vh;
             position: sticky;
             top: 0;
         }
 
         .szczyny{
-            background-color: white;
             height: 100vh;
             width: 100%;
             position: sticky;
             top: 0;
             will-change: scale;
             justify-items: center;
-            
             place-content: center;
         }
 
@@ -119,8 +117,6 @@
         }
 
         .video_container{
-            width: 900px;
-            height: 500px;
             overflow: clip;
             display: flex;
             flex-direction: column;
@@ -139,7 +135,7 @@
         <div class="brown_shit" id="brown_shit">
             <div id="szczyny" class="szczyny">
                 <div class="video_container">
-                    <video id="vid" autoplay loop muted style="filter: url(#tv); width: 1280px; height: 960px;">
+                    <video id="vid" autoplay loop muted style="width: 105vw;">
                         <source src="https://cdn.prod.website-files.com/6470c46e6d62006dbae74804%2F678f765ffe88b4e435207922_6470C46e6d62006dbae74804%2066Fe53fb2dbda47df8bf0373%20Pucha%20Moya%201920%20X%20700-Transcode-transcode.mp4" type="video/mp4">
                     </video>
                 </div>
@@ -148,7 +144,7 @@
     </div>
 
     <div class="sraka">
-        jakies inne gowno
+
     </div>
 
 </body>
@@ -164,15 +160,22 @@
 
 
   for (let i = 0; i < steps; i++) {
-      const div = document.createElement('span');
-      div.className = 'text-block';
-      div.id = `text-block_${i}`;
-      div.textContent = 'REEQUEST';
-      const start = (i * 100) / steps;
-      const end = ((i + 1) * 100) / steps;
-      div.style.webkitMaskImage = `linear-gradient(to bottom, transparent 0%, transparent ${start}%, white ${start}%, white ${end}%, transparent ${end}%, transparent 100%)`;
-      div.style.maskImage = div.style.webkitMaskImage;
-      document.querySelector('.hero').appendChild(div);
+    const div = document.createElement('span');
+    div.className = 'text-block';
+    div.id = `text-block_${i}`;
+    //div.textContent = 'REEQUEST';
+    //tutaj dodaj image
+    const img = document.createElement('img');
+    img.src = 'REEQUEST - LOGO - white.svg';
+    img.alt = 'REEQUEST';
+    img.style.height = "450px";
+    div.appendChild(img);
+
+    const start = (i * 100) / steps;
+    const end = ((i + 1) * 100) / steps;
+    div.style.webkitMaskImage = `linear-gradient(to bottom, transparent 0%, transparent ${start}%, white ${start}%, white ${end}%, transparent ${end}%, transparent 100%)`;
+    div.style.maskImage = div.style.webkitMaskImage;
+    document.querySelector('.hero').appendChild(div);
   }
 
   function move_shit(element, offset){
@@ -183,7 +186,7 @@
               end: () => `top+=${window.innerHeight * 1.2 - offset}px`,
               scrub: 0.5
           },
-          x: "-150%",
+          x: "-200%",
           y: 0,
           z: 0,
           force3D: true,
@@ -211,9 +214,8 @@
         {
             scrollTrigger: {
                 trigger: "#szczyny",
-                start: "top 55%",
-                end: "top 45%",
-                markers: true,
+                start: "top 30%",
+                end: "top 10%",
                 scrub: true
             },
             scale: 1,
