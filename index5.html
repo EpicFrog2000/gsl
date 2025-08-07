@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script async="" src="https://unpkg.com/lenis@1.2.3/dist/lenis.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.2.3/dist/lenis.css">
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://unpkg.com/lenis@1.2.3/dist/lenis.css';
+        document.head.appendChild(link);
+        var script = document.createElement('script');
+        script.src = 'https://unpkg.com/lenis@1.2.3/dist/lenis.min.js';
+        script.onload = function() {
+        let lenis = new Lenis({
+            lerp: 0.06,
+            wheelMultiplier: 0.3,
+            gestureOrientation: "vertical",
+            normalizeWheel: false,
+            smoothTouch: false,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+        };
+        document.head.appendChild(script);
+    });
+    </script>
+    <style>
+      body{
+        min-height: 90vh;
+        background-color: black;
+      }
+      .corner {
+        display: grid;
+        grid-template: 1fr / 1fr;
+      }
+
+      .corner_top_right,
+      .corner_bottom_right {
+        justify-items: end;
+      }
+
+      .corner_bottom_left,
+      .corner_bottom_right {
+        align-items: end;
+      }
+
+      [class^="corner_"] {
+        width: 0;
+        height: 0;
+        grid-area: 1/1;
+      }
+
+      .corner_top_top_left     { border-top: 20px solid green; border-right: 60px solid transparent; grid-area: 1/1;}
+      .corner_top_bottom_left  { border-top: 60px solid green; border-right: 20px solid transparent; grid-area: 1/1;}
+      .corner_top_top_right    { border-top: 60px solid green; border-left: 20px solid transparent; grid-area: 1/1;}
+      .corner_top_bottom_right { border-top: 20px solid green; border-left: 60px solid transparent; grid-area: 1/1;}
+      .corner_bottom_top_left     { border-bottom: 20px solid green; border-right: 60px solid transparent; grid-area: 1/1;}
+      .corner_bottom_bottom_left  { border-bottom: 60px solid green; border-right: 20px solid transparent; grid-area: 1/1;}
+      .corner_bottom_top_right    { border-bottom: 60px solid green; border-left: 20px solid transparent; grid-area: 1/1;}
+      .corner_bottom_bottom_right { border-bottom: 20px solid green; border-left: 60px solid transparent; grid-area: 1/1;}
+
+      .plate {
+        display: grid;
+        width: auto;
+        height: auto;
+        grid-template: repeat(2, 1fr) / repeat(2, 1fr);
+        place-self: center;
+        align-self: center;
+        justify-self: center;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%); 
+        will-change: transform;
+      }
+    </style>
+</head>
+<body>
+  <div class="plate">
+    <div class="corner">
+      <div class="corner_top_top_left corner_border_green"></div>
+      <div class="corner_top_bottom_left corner_border_green"></div>
+    </div>
+    <div class="corner corner_top_right">
+      <div class="corner_top_top_right corner_border_green"></div>
+      <div class="corner_top_bottom_right corner_border_green"></div>
+    </div>
+    <div class="corner corner_bottom_left">
+      <div class="corner_bottom_top_left corner_border_green"></div>
+      <div class="corner_bottom_bottom_left corner_border_green"></div>
+    </div>
+    <div class="corner corner_bottom_right">
+      <div class="corner_bottom_top_right corner_border_green"></div>
+      <div class="corner_bottom_bottom_right corner_border_green"></div>
+    </div>
+  </div>
+</body>
+</html>
+
+<script>
+  
+  window.addEventListener('load', () => {
+    gsap.registerPlugin(ScrollTrigger);
+    
+    Array.from(document.getElementsByClassName('corner')).forEach(element => {
+      gsap.from(element, {
+          scale: 0,
+          duration: 0.5,
+          ease: "back.in(5)",
+          force3D: true
+      });
+    });
+
+    gsap.to(".plate", {
+        gap: '50px',
+        duration: 0.5,
+        ease: "expo.out",
+        force3D: true
+    },0.5);
+    gsap.to(".plate", {
+        rotation: 90,
+        duration: 0.7,
+        ease: "back.out(0.5)",
+        force3D: true
+    },);
+
+
+
+  });
+
+</script>
