@@ -59,11 +59,10 @@
         .clock_elems{
             position: relative;
             z-index: 1;
-            background-color: black;
+            background-color: transparent;
             grid-area: 1/1;
             border-radius: 50%;
             border: 2px solid black;
-            overflow: hidden;
         }
 
         .line {
@@ -72,26 +71,68 @@
             left: 50%;
             width: 2px;
             height: 50%;
-            background-color: black;
+            background-color: transparent;
             transform-origin: 50% 100%;
         }
 
-        .line_detail{
+        .line_regular{
             background-color: green; 
-            height: 10px; 
-            width: 2px; 
+            height: 20px; 
+            width: 5px; 
             position: absolute; 
             top: 80px;
+            border-radius: 5px;
         }
-        .line_mainer{
+
+        .line_main{
             background-color: green; 
-            height: 10px; 
-            width: 2px; 
             position: absolute; 
             top: 0px;
-            width: 3px;
-            height: 100px; 
+            width: 5px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 10px;
         }
+
+        .hori_line_bottom_r{
+            border-top: 2px solid green;
+            border-right: 100px solid transparent;
+            width: 0;
+            height: 0;
+            transform: scaleX(-1);
+        }
+        .hori_line_top_r{
+            border-bottom: 2px solid green;
+            border-right: 100px solid transparent;
+            width: 0;
+            height: 0;
+            transform: scaleX(-1);
+        }
+
+        .hori_line_bottom_l {
+            border-top: 2px solid green;
+            border-right: 100px solid transparent;
+            width: 0;
+            height: 0;
+        }
+
+        .hori_line_top_l {
+            border-bottom: 2px solid green;
+            border-right: 100px solid transparent;
+            width: 0;
+            height: 0;
+        }
+
+        .line_details_container{
+            position: absolute;
+            z-index: 2;
+            top: 20px;
+            display: flex;
+            flex-direction: row;
+        }
+
     </style>
 </head>
 <body>
@@ -106,32 +147,39 @@
         </div>
     </div>
 
-
-
-
 </body>
 </html>
 
 <script>
   
   window.addEventListener('load', () => {
+
     function createClockLines(numLines) {
         const clockElems = document.querySelector(".clock_elems");
         const angleStep = 360 / numLines;
-
         for (let i = 0; i < numLines; i++) {
             const line = document.createElement("div");
             line.classList.add("line");
             line.style.transform = `rotate(${i * angleStep}deg)`;
-
             const lineDetail = document.createElement("div");
-            
             if (i % 9 === 0) {
-                lineDetail.classList.add("line_mainer");
+                lineDetail.classList.add("line_main");
+                const line_details_container = document.createElement("div");
+                line_details_container.classList.add('line_details_container');
+                [{ top: "hori_line_top_r", bottom: "hori_line_bottom_r", origin: "right" },{ top: "hori_line_top_l", bottom: "hori_line_bottom_l", origin: "left" }].forEach(({ top, bottom, origin }) => {
+                    const container = document.createElement("div");
+                    container.style.transformOrigin = origin;
+                    [top, bottom].forEach(cls => {
+                        const el = document.createElement("div");
+                        el.classList.add(cls);
+                        container.appendChild(el);
+                    });
+                    line_details_container.appendChild(container);
+                });
+                lineDetail.appendChild(line_details_container);
             }else{
-                lineDetail.classList.add("line_detail");
+                lineDetail.classList.add("line_regular");
             }
-
             line.appendChild(lineDetail);
             clockElems.appendChild(line);
         }
@@ -141,7 +189,7 @@
 
     gsap.registerPlugin(ScrollTrigger);
     let offset = 0.1;
-    Array.from(document.getElementsByClassName('line_mainer')).forEach(element => {
+    Array.from(document.getElementsByClassName('line_main')).forEach(element => {
         gsap.from(element, {
             top: '200px',
             height: '0px',
@@ -151,7 +199,7 @@
         },offset+=0.5/4);
     });
 
-    Array.from(document.getElementsByClassName('line_detail')).forEach(element => {
+    Array.from(document.getElementsByClassName('line_regular')).forEach(element => {
         gsap.from(element, {
             top: '100px',
             height: '0px',
@@ -159,6 +207,18 @@
             ease:  "back.out(1)",
             force3D: true
         },offset+=0.5/36);
+    });
+
+    ['hori_line_top_l', 'hori_line_bottom_l', 'hori_line_top_r', 'hori_line_bottom_r'].forEach(className => {
+        Array.from(document.getElementsByClassName(className)).forEach(ele => {
+            gsap.fromTo(ele.parentElement, 
+            {scaleX: 0,},
+            {
+                scaleX: 1,
+                duration: 1,
+                force3D: true
+            }, 1);
+        });
     });
 
 

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+    <script async="" src="https://unpkg.com/lenis@1.2.3/dist/lenis.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.2.3/dist/lenis.css">
+    <script>
+    var lenis;
+    document.addEventListener("DOMContentLoaded", function() {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://unpkg.com/lenis@1.2.3/dist/lenis.css';
+        document.head.appendChild(link);
+        var script = document.createElement('script');
+        script.src = 'https://unpkg.com/lenis@1.2.3/dist/lenis.min.js';
+        script.onload = function() {
+        lenis = new Lenis({
+            lerp: 0.06,
+            wheelMultiplier: 0.3,
+            gestureOrientation: "vertical",
+            normalizeWheel: false,
+            smoothTouch: false,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+        };
+        document.head.appendChild(script);
+    });
+    </script>
+</head>
+<body>
+<div id="drag-free-snap" class="splide">
+  <div class="splide__track">
+    <ul class="splide__list">
+      <li class="splide__slide">
+        <div class="slide_image" style="background-image: url('https://www.alessandroromagnoliph.it/public/images/projects/1013/1a2a3044-22092023141044.jpg');">
+        </div>
+      </li>
+      <li class="splide__slide">
+        <div class="slide_image" style="background-image: url('https://www.alessandroromagnoliph.it/public/images/projects/5/1a2a0337-04022025180213.jpg');">
+        </div>
+      </li>
+      <li class="splide__slide">
+        <div class="slide_image" style="background-image: url('https://www.alessandroromagnoliph.it/public/images/projects/1021/senza-titolo-1-04022025165143.jpg');">
+        </div>
+      </li>
+      <li class="splide__slide">
+        <div class="slide_image" style="background-image: url('https://www.alessandroromagnoliph.it/public/images/projects/3/under-armour-05022025111937.jpg');">
+        </div>
+      </li>
+      <li class="splide__slide">
+        <div class="slide_image" style="background-image: url('https://www.alessandroromagnoliph.it/public/images/projects/4/7-fotografo-commerciale-verona---adidas-basketball-lifestyle-shooting-06022025154534.jpg');">
+        </div>
+      </li>
+      <li class="splide__slide">
+        <div class="slide_image" style="background-image: url('https://www.alessandroromagnoliph.it/public/images/projects/6/6-fotografo-commerciale-verona--piero-milano-gioielli-scatti-campagna-lifestyle-22022021143801.jpg');">
+        </div>
+      </li>
+      <li class="splide__slide">
+        <div class="slide_image" style="background-image: url('https://www.alessandroromagnoliph.it/public/images/projects/1013/1a2a3044-22092023141044.jpg');">
+        </div>
+      </li>
+      <li class="splide__slide">
+        <div class="slide_image" style="background-image: url('https://www.alessandroromagnoliph.it/public/images/projects/5/1a2a0337-04022025180213.jpg');"">
+        </div>
+      </li>
+      <li class="splide__slide">
+        <div class="slide_image" style="background-image: url('https://www.alessandroromagnoliph.it/public/images/projects/1021/senza-titolo-1-04022025165143.jpg');">
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<style>
+    body{
+        margin: 0;
+        padding: 0;
+    }
+    .slide_image{
+        width: 100%;
+        height: 100%;
+        background-position: 50% 50%;
+        background-size: cover;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+        transition: all 2s cubic-bezier(0.16,1,0.3,1);
+        scale: 1.0;
+        will-change: scale;
+    }
+    .slide_image:hover{
+        scale: 1.1;
+    }
+    .splide__slide{
+        background-color: RED;
+        height: 100vh;
+        margin-right: 3vw;
+        transition: all 0.75s cubic-bezier(0.16,1,0.3,1);
+        will-change: transform;
+        overflow: clip;
+    }
+    .splide{
+        width: 100vw;
+    }
+    .splide__arrow{
+        display: none;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+
+
+<script>
+const DURATION = 750;
+window.addEventListener('load', () => {
+    gsap.registerPlugin(ScrollTrigger);
+    var splide = new Splide('.splide', {
+        snap: true,
+        drag: false,
+        perPage: 2.65,
+        pagination: false,
+        focus: 'left',
+        speed: DURATION,
+    });
+
+    let current = 0;
+
+    splide.on('move', (newIndex) => {
+        const slides = document.querySelectorAll('.splide__slide');
+        slides.forEach((slide, i) => {
+            let diff = i - newIndex;
+            if (diff > splide.length / 2) diff -= splide.length;
+            if (diff < -splide.length / 2) diff += splide.length;
+            diff = Math.max(Math.min(diff, 2), -2);
+            const timeline = gsap.timeline();
+            timeline.to(slide, {
+                y: `${(diff) * 25}vh`,
+                duration: 0,
+                force3D: true,
+                ease: "cubic-bezier(0.16,1,0.3,1)",
+            },0);
+            timeline.to(slide.querySelector(".slide_image"), {
+                backgroundPositionX: `${50 + diff * 5}%`,
+                duration: 0,
+                ease: "power2.out"
+            }, 0);
+        });
+    });
+
+    splide.mount();
+    const arrow_prev = document.getElementsByClassName('splide__arrow--prev')[0];
+    const arrow_next = document.getElementsByClassName('splide__arrow--next')[0];
+
+    let canClick = true;
+    window.addEventListener('wheel', (e) => {
+        if (!canClick) return;
+        
+        if (e.deltaY > 0) {
+            if (current == document.querySelectorAll('.splide__slide').length - 4) {
+                return;
+            }
+            arrow_next.click(); 
+            current++;
+        }
+        else if (e.deltaY < 0) {
+            if(current == 0){
+                return;
+            }
+            arrow_prev.click(); 
+            current--;
+        }
+        console.log(current);
+        canClick = false;
+        setTimeout(() => canClick = true, DURATION);
+    });
+    arrow_next.click();
+
+    gsap.to(".slide_image", {
+        backgroundPosition: "40% 40%", 
+        ease: "cubic-bezier(0.16,1,0.3,1)",
+        duration: DURATION,
+        scrollTrigger: {
+            trigger: ".slide_image",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true
+        }
+    });
+});
+
+
+
+  
+</script>
+
+</body>
+</html>

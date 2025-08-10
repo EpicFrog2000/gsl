@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+    <script async="" src="https://unpkg.com/lenis@1.2.3/dist/lenis.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.2.3/dist/lenis.css">
+    <script>
+    var lenis;
+    document.addEventListener("DOMContentLoaded", function() {
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://unpkg.com/lenis@1.2.3/dist/lenis.css';
+        document.head.appendChild(link);
+        var script = document.createElement('script');
+        script.src = 'https://unpkg.com/lenis@1.2.3/dist/lenis.min.js';
+        script.onload = function() {
+        lenis = new Lenis({
+            lerp: 0.06,
+            wheelMultiplier: 0.3,
+            gestureOrientation: "vertical",
+            normalizeWheel: false,
+            smoothTouch: false,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+        };
+        document.head.appendChild(script);
+    });
+    </script>
+    <style>
+        *{
+            scrollbar-width: none;
+        }
+        body{
+            margin: 0;
+            padding: 0;
+            background-color: black;
+        }
+        
+        .content_top{
+            background-color: red;
+            height: 100vh;
+        }
+
+        .content_bottom{
+            background-color: green;
+            height: 100vh;
+        }
+
+        .content_slider{
+            height: 100vh;
+            max-height: 100vh;
+            overflow: clip;
+            display: grid;
+            grid-template: 1fr / 1fr;
+        }
+
+        .items_container{
+            background: linear-gradient(to right, red, blue);
+            height: 100%;
+            width: 37vw;
+            grid-area: 1/1;
+            display: flex;
+            flex-direction: row;
+        }
+    </style>
+</head>
+<body>
+    <div class="content_top">
+
+    </div>
+
+    <div class="content_slider">
+        <div class="items_container">
+
+        </div>
+
+        <div class="items_container" style="transform: translateX(37vw) translateX(5vw) translateY(25vh);">
+
+        </div>
+        <div class="items_container" style="transform: translateX(74vw) translateX(10vw) translateY(50vh);">
+
+        </div>
+    </div>
+
+    <div class="content_bottom">
+
+    </div>
+
+</body>
+</html>
+
+<script>
+var scrolling = false;
+const items_containers = Array.from(document.getElementsByClassName('items_container'));
+var timesScrolled = 0;
+var max = items_containers.length;
+const timeline = gsap.timeline();
+const elementWidth = window.innerWidth * 0.37;
+const elementSpacing = window.innerWidth * 0.05;
+
+
+window.addEventListener('load', () => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    ScrollTrigger.create({
+        trigger: ".content_slider",
+        start: "top top",
+        onToggle: self => {
+            if (self.direction === 1 ) {
+                DoTheThing();
+                if(Math.abs(timesScrolled) >= 6){
+                    timesScrolled = 0;
+                    return;
+                }
+            } else if (self.direction === -1) {
+                DoTheThingBack();
+                if(Math.abs(timesScrolled) >= 6){
+                    timesScrolled = 0;
+                    return;
+                }
+            }
+        },
+        markers: true,
+    });
+
+    function stopScroll() {
+        lenis.stop();
+    }
+
+    function resumeScroll() {
+        lenis.start();
+        scrolling = false;
+    }
+
+    function DoTheThing() {
+        stopScroll();
+        moveBlock();
+    }
+
+    function DoTheThingBack() {
+        stopScroll();
+        moveBlockBack();
+    }
+
+    window.addEventListener('wheel', e => {
+        e.preventDefault();
+        console.log("test");
+    }, { passive: false });
+
+    
+
+    function moveBlock(){
+        
+        items_containers.forEach(element => {
+            timeline.to(element, {
+                x: (parseFloat(gsap.getProperty(element, "x")) || 0) + elementWidth + elementSpacing,
+                duration: 0.5,
+                ease: "circ.in",
+                force3D: true
+            }, 0);
+        });
+        timesScrolled++;
+    }
+
+    function moveBlockBack(){
+        items_containers.forEach(element => {
+            timeline.to(element, {
+                x: (parseFloat(gsap.getProperty(element, "x")) || 0) - (elementWidth + elementSpacing),
+                duration: 0.5,
+                ease: "circ.in",
+                force3D: true
+            }, 0);
+        });
+        timesScrolled++;
+    }
+});
+
+
+</script>
